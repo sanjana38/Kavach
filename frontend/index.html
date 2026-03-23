@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CTI Dashboard</title>
+</head>
+<body>
+
+<h1>CTI Threat Dashboard</h1>
+
+<button onclick="loadThreats()">Load Threats</button>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Indicator</th>
+            <th>Risk</th>
+        </tr>
+    </thead>
+    <tbody id="threatTable"></tbody>
+</table>
+
+<br><br>
+
+<input type="text" id="urlInput" placeholder="Enter URL">
+<button onclick="checkURL()">Check</button>
+
+<p id="result"></p>
+
+<script>
+async function loadThreats() {
+    const res = await fetch("http://127.0.0.1:8000/api/threats");
+    const data = await res.json();
+
+    const table = document.getElementById("threatTable");
+    table.innerHTML = ""; // clear old data
+
+    data.forEach(threat => {
+
+        let color = "green";
+        if (threat.risk_score > 70) color = "red";
+        else if (threat.risk_score > 40) color = "orange";
+
+        const row = `<tr>
+            <td>${threat.type}</td>
+            <td>${threat.indicator}</td>
+            <td style="color:${color}">${threat.risk_score}</td>
+        </tr>`;
+
+        table.innerHTML += row;
+    });
+}
+
+async function checkURL() {
+    const url = document.getElementById("urlInput").value;
+
+    const res = await fetch(`http://127.0.0.1:8000/api/check?url=${url}`);
+    const data = await res.json();
+
+    document.getElementById("result").innerText =
+        `Risk: ${data.risk_score} | ${data.status}`;
+}
+
+// Auto load on page open
+loadThreats();
+</script>
+
+</body>
+</html>

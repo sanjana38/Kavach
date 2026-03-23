@@ -1,0 +1,23 @@
+[
+  {
+    "type": "phishing",
+    "indicator": "fakebank-login.com",
+    "source": "PhishTank",
+    "risk_score": 90,
+    "category": "student_scam"
+  },
+  {
+    "type": "phishing",
+    "indicator": "internship-offer-pay.com",
+    "source": "User",
+    "risk_score": 85,
+    "category": "student_scam"
+  },
+  {
+    "type": "ip",
+    "indicator": "192.168.1.100",
+    "source": "AbuseIPDB",
+    "risk_score": 60,
+    "category": "general"
+  }
+]
